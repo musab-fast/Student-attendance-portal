@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Student-attendance-portal/static/css/main.3d4e2950.css",
+    "main.js": "/Student-attendance-portal/static/js/main.f927a2c1.js",
+    "static/js/453.eb570f4f.chunk.js": "/Student-attendance-portal/static/js/453.eb570f4f.chunk.js",
+    "index.html": "/Student-attendance-portal/index.html",
+    "main.3d4e2950.css.map": "/Student-attendance-portal/static/css/main.3d4e2950.css.map",
+    "main.f927a2c1.js.map": "/Student-attendance-portal/static/js/main.f927a2c1.js.map",
+    "453.eb570f4f.chunk.js.map": "/Student-attendance-portal/static/js/453.eb570f4f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.3d4e2950.css",
+    "static/js/main.f927a2c1.js"
+  ]
+}
