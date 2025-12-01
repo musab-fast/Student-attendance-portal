@@ -98,7 +98,7 @@ const UserManagement = () => {
                         )}
 
                         {/* Add User Form */}
-                        <div className="card-dark p-6 mb-8 animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
+                        <div className="card-dark p-6 mb-8 animate-fadeInUp animate-delay-100">
                             <h2 className="text-xl font-bold mb-4 text-[#F5F5F5]">Add New User</h2>
                             <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -152,6 +152,18 @@ const UserManagement = () => {
                                 {formData.role === 'student' && (
                                     <>
                                         <div>
+                                            <label className="block mb-2 font-medium text-[#F5F5F5]">Student ID</label>
+                                            <input
+                                                type="text"
+                                                name="student_id"
+                                                value={formData.student_id}
+                                                onChange={handleChange}
+                                                className="input-dark"
+                                                placeholder="e.g., S001"
+                                                required
+                                            />
+                                        </div>
+                                        <div>
                                             <label className="block mb-2 font-medium text-[#F5F5F5]">Roll Number</label>
                                             <input
                                                 type="text"
@@ -159,6 +171,8 @@ const UserManagement = () => {
                                                 value={formData.roll_number}
                                                 onChange={handleChange}
                                                 className="input-dark"
+                                                placeholder="e.g., CS-2021-001"
+                                                required
                                             />
                                         </div>
                                         <div>
@@ -169,6 +183,8 @@ const UserManagement = () => {
                                                 value={formData.department}
                                                 onChange={handleChange}
                                                 className="input-dark"
+                                                placeholder="e.g., Computer Science"
+                                                required
                                             />
                                         </div>
                                         <div>
@@ -179,6 +195,10 @@ const UserManagement = () => {
                                                 value={formData.semester}
                                                 onChange={handleChange}
                                                 className="input-dark"
+                                                placeholder="e.g., 5"
+                                                min="1"
+                                                max="8"
+                                                required
                                             />
                                         </div>
                                         <div>
@@ -189,6 +209,8 @@ const UserManagement = () => {
                                                 value={formData.section}
                                                 onChange={handleChange}
                                                 className="input-dark"
+                                                placeholder="e.g., A"
+                                                required
                                             />
                                         </div>
                                     </>
@@ -204,6 +226,8 @@ const UserManagement = () => {
                                                 value={formData.teacher_id}
                                                 onChange={handleChange}
                                                 className="input-dark"
+                                                placeholder="e.g., T001"
+                                                required
                                             />
                                         </div>
                                         <div>
@@ -214,6 +238,8 @@ const UserManagement = () => {
                                                 value={formData.department}
                                                 onChange={handleChange}
                                                 className="input-dark"
+                                                placeholder="e.g., Computer Science"
+                                                required
                                             />
                                         </div>
                                     </>
@@ -228,7 +254,7 @@ const UserManagement = () => {
                         </div>
 
                         {/* Users List */}
-                        <div className="card-dark p-6 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+                        <div className="card-dark p-6 animate-fadeInUp animate-delay-200">
                             <h2 className="text-xl font-bold mb-4 text-[#F5F5F5]">All Users</h2>
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse">
