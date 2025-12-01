@@ -78,7 +78,7 @@ const AttendanceManagement = () => {
                         course_id: selectedCourse,
                         date: date,
                         status: attendanceData[studentId]
-                    }, config);
+                    }, authConfig);
                     successCount++;
                 } catch (err) {
                     console.error(err);
