@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
@@ -13,7 +14,7 @@ const AttendanceManagement = () => {
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-    const config = {
+    const authConfig = {
         headers: {
             Authorization: `Bearer ${userInfo?.token}`,
         },
@@ -22,7 +23,7 @@ const AttendanceManagement = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/teacher/courses', config);
+                const { data } = await axios.get(`${config.API_URL}/teacher/courses`, authConfig);
                 setCourses(data);
             } catch (err) {
                 console.error(err);
@@ -35,7 +36,7 @@ const AttendanceManagement = () => {
         if (selectedCourse) {
             const fetchStudents = async () => {
                 try {
-                    const { data } = await axios.get(`http://localhost:5000/api/teacher/enrolled-students/${selectedCourse}`, config);
+                    const { data } = await axios.get(`${config.API_URL}/teacher/enrolled-students/${selectedCourse}`, authConfig);
                     setStudents(data);
                 } catch (err) {
                     console.error(err);
@@ -72,7 +73,7 @@ const AttendanceManagement = () => {
 
             for (const studentId of Object.keys(attendanceData)) {
                 try {
-                    await axios.post('http://localhost:5000/api/teacher/attendance', {
+                    await axios.post(`${config.API_URL}/teacher/attendance`, {
                         student_id: studentId,
                         course_id: selectedCourse,
                         date: date,

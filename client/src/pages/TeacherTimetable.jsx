@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const TeacherTimetable = () => {
     const [timetable, setTimetable] = useState([]);
@@ -8,7 +9,7 @@ const TeacherTimetable = () => {
     const [error, setError] = useState('');
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -21,7 +22,7 @@ const TeacherTimetable = () => {
     const fetchTimetable = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('http://localhost:5000/api/teacher/timetable', config);
+            const { data } = await axios.get(`${config.API_URL}/teacher/timetable`, authConfig);
             setTimetable(data);
             setLoading(false);
         } catch (error) {

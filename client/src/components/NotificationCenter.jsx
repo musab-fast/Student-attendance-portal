@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import config from '../config';
 
 const NotificationCenter = () => {
     const [notifications, setNotifications] = useState([]);
@@ -10,7 +11,7 @@ const NotificationCenter = () => {
     const navigate = useNavigate();
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -34,7 +35,7 @@ const NotificationCenter = () => {
 
     const fetchNotifications = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/notifications?limit=5', config);
+            const { data } = await axios.get(`${config.API_URL}/notifications?limit=5`, authConfig);
             setNotifications(data.notifications);
             setUnreadCount(data.unreadCount);
         } catch (error) {
@@ -44,7 +45,7 @@ const NotificationCenter = () => {
 
     const markAsRead = async (id, link) => {
         try {
-            await axios.put(`http://localhost:5000/api/notifications/${id}/read`, {}, config);
+            await axios.put(`${config.API_URL}/notifications/${id}/read`, {}, authConfig);
             fetchNotifications();
             if (link) {
                 navigate(link);

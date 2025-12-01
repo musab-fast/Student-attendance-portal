@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const AdminTimetable = () => {
     const [timetables, setTimetables] = useState([]);
@@ -21,7 +22,7 @@ const AdminTimetable = () => {
     const [filterSemester, setFilterSemester] = useState('');
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -35,9 +36,9 @@ const AdminTimetable = () => {
         try {
             setLoading(true);
             const [timetableRes, coursesRes, usersRes] = await Promise.all([
-                axios.get('http://localhost:5000/api/admin/timetable', config),
-                axios.get('http://localhost:5000/api/admin/courses', config),
-                axios.get('http://localhost:5000/api/admin/users', config)
+                axios.get(`${config.API_URL}/admin/timetable`, authConfig),
+                axios.get(`${config.API_URL}/admin/courses`, authConfig),
+                axios.get(`${config.API_URL}/admin/users`, authConfig)
             ]);
 
             setTimetables(timetableRes.data);
@@ -54,9 +55,9 @@ const AdminTimetable = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                await axios.put(`http://localhost:5000/api/admin/timetable/${editingId}`, formData, config);
+                await axios.put(`${config.API_URL}/admin/timetable/${editingId}`, formData, authConfig);
             } else {
-                await axios.post('http://localhost:5000/api/admin/timetable', formData, config);
+                await axios.post(`${config.API_URL}/admin/timetable`, formData, authConfig);
             }
             fetchData();
             resetForm();
@@ -83,7 +84,7 @@ const AdminTimetable = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this timetable entry?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/admin/timetable/${id}`, config);
+                await axios.delete(`${config.API_URL}/admin/timetable/${id}`, authConfig);
                 fetchData();
             } catch (error) {
                 console.error('Error deleting timetable:', error);

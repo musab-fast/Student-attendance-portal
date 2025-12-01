@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const LeaveManagement = () => {
     const [leaveRequests, setLeaveRequests] = useState([]);
@@ -9,7 +10,7 @@ const LeaveManagement = () => {
     const [remarks, setRemarks] = useState('');
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -19,7 +20,7 @@ const LeaveManagement = () => {
 
     const fetchLeaveRequests = async () => {
         try {
-            const { data } = await axios.get(`http://localhost:5000/api/admin/leave-requests?status=${filter}`, config);
+            const { data } = await axios.get(`${config.API_URL}/admin/leave-requests?status=${filter}`, authConfig);
             setLeaveRequests(data);
         } catch (error) {
             console.error('Error fetching leave requests:', error);
@@ -28,7 +29,7 @@ const LeaveManagement = () => {
 
     const handleAction = async (id, status) => {
         try {
-            await axios.put(`http://localhost:5000/api/admin/leave-requests/${id}`, { status, admin_remarks: remarks }, config);
+            await axios.put(`${config.API_URL}/admin/leave-requests/${id}`, { status, admin_remarks: remarks }, authConfig);
             setSelectedRequest(null);
             setRemarks('');
             fetchLeaveRequests();

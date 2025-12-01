@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
@@ -7,7 +8,7 @@ const MyAttendance = () => {
     const [attendance, setAttendance] = useState([]);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-    const config = {
+    const authConfig = {
         headers: {
             Authorization: `Bearer ${userInfo?.token}`,
         },
@@ -16,7 +17,7 @@ const MyAttendance = () => {
     useEffect(() => {
         const fetchAttendance = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/student/attendance', config);
+                const { data } = await axios.get(`${config.API_URL}/student/attendance`, authConfig);
                 setAttendance(data);
             } catch (err) {
                 console.error(err);
@@ -45,7 +46,7 @@ const MyAttendance = () => {
                             <div className="card-dark card-hover p-6 animate-fadeInUp">
                                 <h3 className="text-[#D1D5DB] text-sm font-medium mb-2">Attendance %</h3>
                                 <p className={`text-3xl font-bold ${attendancePercentage >= 75 ? 'text-[#1D4ED8]' :
-                                        attendancePercentage >= 50 ? 'text-[#6B7280]' : 'text-[#6B7280]'
+                                    attendancePercentage >= 50 ? 'text-[#6B7280]' : 'text-[#6B7280]'
                                     }`}>{attendancePercentage}%</p>
                             </div>
                             <div className="card-dark card-hover p-6 animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
@@ -85,10 +86,10 @@ const MyAttendance = () => {
                                                 </td>
                                                 <td className="p-3">
                                                     <span className={`px-3 py-1 rounded-full text-sm ${record.status === 'Present'
-                                                            ? 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
-                                                            : record.status === 'Absent'
-                                                                ? 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
-                                                                : 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
+                                                        ? 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
+                                                        : record.status === 'Absent'
+                                                            ? 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
+                                                            : 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
                                                         }`}>
                                                         {record.status}
                                                     </span>

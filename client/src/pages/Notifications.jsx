@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
@@ -8,7 +9,7 @@ const Notifications = () => {
     const [loading, setLoading] = useState(true);
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -19,7 +20,7 @@ const Notifications = () => {
     const fetchNotifications = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('http://localhost:5000/api/notifications?limit=100', config);
+            const { data } = await axios.get(`${config.API_URL}/notifications?limit=100`, authConfig);
             setNotifications(data.notifications);
         } catch (error) {
             console.error('Error fetching notifications:', error);
@@ -30,7 +31,7 @@ const Notifications = () => {
 
     const markAsRead = async (id) => {
         try {
-            await axios.put(`http://localhost:5000/api/notifications/${id}/read`, {}, config);
+            await axios.put(`${config.API_URL}/notifications/${id}/read`, {}, authConfig);
             fetchNotifications();
         } catch (error) {
             console.error('Error marking notification as read:', error);
@@ -39,7 +40,7 @@ const Notifications = () => {
 
     const markAllAsRead = async () => {
         try {
-            await axios.put('http://localhost:5000/api/notifications/mark-all-read', {}, config);
+            await axios.put(`${config.API_URL}/notifications/mark-all-read`, {}, authConfig);
             fetchNotifications();
         } catch (error) {
             console.error('Error marking all as read:', error);
@@ -48,7 +49,7 @@ const Notifications = () => {
 
     const deleteNotification = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/notifications/${id}`, config);
+            await axios.delete(`${config.API_URL}/notifications/${id}`, authConfig);
             fetchNotifications();
         } catch (error) {
             console.error('Error deleting notification:', error);
@@ -83,8 +84,8 @@ const Notifications = () => {
                     <button
                         onClick={() => setFilter('all')}
                         className={`px-4 py-2 rounded-lg transition-colors ${filter === 'all'
-                                ? 'bg-[#1D4ED8] text-white'
-                                : 'bg-[#2E2E2E] text-[#D1D5DB] hover:bg-[#3E3E3E]'
+                            ? 'bg-[#1D4ED8] text-white'
+                            : 'bg-[#2E2E2E] text-[#D1D5DB] hover:bg-[#3E3E3E]'
                             }`}
                     >
                         All
@@ -92,8 +93,8 @@ const Notifications = () => {
                     <button
                         onClick={() => setFilter('unread')}
                         className={`px-4 py-2 rounded-lg transition-colors ${filter === 'unread'
-                                ? 'bg-[#1D4ED8] text-white'
-                                : 'bg-[#2E2E2E] text-[#D1D5DB] hover:bg-[#3E3E3E]'
+                            ? 'bg-[#1D4ED8] text-white'
+                            : 'bg-[#2E2E2E] text-[#D1D5DB] hover:bg-[#3E3E3E]'
                             }`}
                     >
                         Unread
@@ -101,8 +102,8 @@ const Notifications = () => {
                     <button
                         onClick={() => setFilter('read')}
                         className={`px-4 py-2 rounded-lg transition-colors ${filter === 'read'
-                                ? 'bg-[#1D4ED8] text-white'
-                                : 'bg-[#2E2E2E] text-[#D1D5DB] hover:bg-[#3E3E3E]'
+                            ? 'bg-[#1D4ED8] text-white'
+                            : 'bg-[#2E2E2E] text-[#D1D5DB] hover:bg-[#3E3E3E]'
                             }`}
                     >
                         Read
@@ -137,8 +138,8 @@ const Notifications = () => {
                         <div
                             key={notification._id}
                             className={`bg-[#2E2E2E] rounded-xl p-6 border transition-all ${!notification.read
-                                    ? 'border-[#1D4ED8] bg-[#1D4ED8]/5'
-                                    : 'border-[#2E2E2E] hover:border-[#3E3E3E]'
+                                ? 'border-[#1D4ED8] bg-[#1D4ED8]/5'
+                                : 'border-[#2E2E2E] hover:border-[#3E3E3E]'
                                 }`}
                         >
                             <div className="flex items-start justify-between gap-4">

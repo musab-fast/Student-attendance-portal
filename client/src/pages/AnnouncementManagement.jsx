@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const AnnouncementManagement = () => {
     const [announcements, setAnnouncements] = useState([]);
@@ -15,7 +16,7 @@ const AnnouncementManagement = () => {
     });
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -25,7 +26,7 @@ const AnnouncementManagement = () => {
 
     const fetchAnnouncements = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/admin/announcements', config);
+            const { data } = await axios.get(`${config.API_URL}/admin/announcements`, authConfig);
             setAnnouncements(data);
         } catch (error) {
             console.error('Error fetching announcements:', error);
@@ -36,9 +37,9 @@ const AnnouncementManagement = () => {
         e.preventDefault();
         try {
             if (editingId) {
-                await axios.put(`http://localhost:5000/api/admin/announcements/${editingId}`, formData, config);
+                await axios.put(`${config.API_URL}/admin/announcements/${editingId}`, formData, authConfig);
             } else {
-                await axios.post('http://localhost:5000/api/admin/announcements', formData, config);
+                await axios.post(`${config.API_URL}/admin/announcements`, formData, authConfig);
             }
             setShowForm(false);
             setEditingId(null);
@@ -64,7 +65,7 @@ const AnnouncementManagement = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this announcement?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/admin/announcements/${id}`, config);
+                await axios.delete(`${config.API_URL}/admin/announcements/${id}`, authConfig);
                 fetchAnnouncements();
             } catch (error) {
                 console.error('Error deleting announcement:', error);
@@ -186,8 +187,8 @@ const AnnouncementManagement = () => {
                                 <div className="flex items-center gap-3 mb-2">
                                     <h3 className="text-xl font-bold text-[#F5F5F5]">{announcement.title}</h3>
                                     <span className={`px-2 py-1 rounded-full text-xs font-semibold ${announcement.priority === 'high' ? 'bg-[#6B7280]/10 text-[#6B7280]' :
-                                            announcement.priority === 'medium' ? 'bg-[#1D4ED8]/10 text-[#1D4ED8]' :
-                                                'bg-[#6B7280]/10 text-[#6B7280]'
+                                        announcement.priority === 'medium' ? 'bg-[#1D4ED8]/10 text-[#1D4ED8]' :
+                                            'bg-[#6B7280]/10 text-[#6B7280]'
                                         }`}>
                                         {announcement.priority}
                                     </span>

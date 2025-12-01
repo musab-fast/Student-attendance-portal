@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
@@ -17,7 +18,7 @@ const FeeManagement = () => {
     const [loading, setLoading] = useState(false);
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -28,7 +29,7 @@ const FeeManagement = () => {
 
     const fetchFees = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/admin/fees', config);
+            const { data } = await axios.get(`${config.API_URL}/admin/fees`, authConfig);
             setFees(data);
         } catch (err) {
             console.error(err);
@@ -37,7 +38,7 @@ const FeeManagement = () => {
 
     const fetchStudents = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/admin/users', config);
+            const { data } = await axios.get(`${config.API_URL}/admin/users`, authConfig);
             setStudents(data.filter(user => user.role === 'student'));
         } catch (err) {
             console.error(err);
@@ -53,7 +54,7 @@ const FeeManagement = () => {
         setLoading(true);
         setMessage('');
         try {
-            await axios.post('http://localhost:5000/api/admin/fees', formData, config);
+            await axios.post(`${config.API_URL}/admin/fees`, formData, authConfig);
             setMessage('✅ Fee added successfully');
             setFormData({
                 student_id: '',
@@ -72,7 +73,7 @@ const FeeManagement = () => {
 
     const handleStatusUpdate = async (feeId, newStatus) => {
         try {
-            await axios.put(`http://localhost:5000/api/admin/fees/${feeId}`, { status: newStatus }, config);
+            await axios.put(`${config.API_URL}/admin/fees/${feeId}`, { status: newStatus }, authConfig);
             setMessage('✅ Fee status updated');
             fetchFees();
         } catch (err) {
@@ -83,7 +84,7 @@ const FeeManagement = () => {
     const handleDelete = async (feeId) => {
         if (window.confirm('Are you sure you want to delete this fee?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/admin/fees/${feeId}`, config);
+                await axios.delete(`${config.API_URL}/admin/fees/${feeId}`, authConfig);
                 setMessage('✅ Fee deleted successfully');
                 fetchFees();
             } catch (err) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
@@ -10,7 +11,7 @@ const Reports = () => {
     const [loading, setLoading] = useState(false);
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -22,10 +23,10 @@ const Reports = () => {
         setLoading(true);
         try {
             if (activeTab === 'teachers') {
-                const { data } = await axios.get('http://localhost:5000/api/admin/reports/teachers', config);
+                const { data } = await axios.get(`${config.API_URL}/admin/reports/teachers`, authConfig);
                 setTeacherReports(data);
             } else {
-                const { data } = await axios.get('http://localhost:5000/api/admin/reports/students', config);
+                const { data } = await axios.get(`${config.API_URL}/admin/reports/students`, authConfig);
                 setStudentReports(data);
             }
         } catch (err) {

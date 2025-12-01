@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const TeacherProfile = () => {
     const [profile, setProfile] = useState(null);
@@ -8,7 +9,7 @@ const TeacherProfile = () => {
     const [formData, setFormData] = useState({});
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -18,7 +19,7 @@ const TeacherProfile = () => {
 
     const fetchProfile = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/teacher/profile', config);
+            const { data } = await axios.get(`${config.API_URL}/teacher/profile`, authConfig);
             setProfile(data);
             setFormData({
                 phone: data.phone || '',
@@ -35,7 +36,7 @@ const TeacherProfile = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.put('http://localhost:5000/api/teacher/profile', formData, config);
+            await axios.put(`${config.API_URL}/teacher/profile`, formData, authConfig);
             setEditing(false);
             fetchProfile();
         } catch (error) {

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
@@ -21,7 +22,7 @@ const ResultManagement = () => {
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-    const config = {
+    const authConfig = {
         headers: {
             Authorization: `Bearer ${userInfo?.token}`,
         },
@@ -30,7 +31,7 @@ const ResultManagement = () => {
     useEffect(() => {
         const fetchCourses = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/teacher/courses', config);
+                const { data } = await axios.get(`${config.API_URL}/teacher/courses`, authConfig);
                 setCourses(data);
             } catch (err) {
                 console.error(err);
@@ -43,7 +44,7 @@ const ResultManagement = () => {
         if (selectedCourse) {
             const fetchStudents = async () => {
                 try {
-                    const { data } = await axios.get(`http://localhost:5000/api/teacher/enrolled-students/${selectedCourse}`, config);
+                    const { data } = await axios.get(`${config.API_URL}/teacher/enrolled-students/${selectedCourse}`, authConfig);
                     setStudents(data);
                 } catch (err) {
                     console.error(err);
@@ -64,7 +65,7 @@ const ResultManagement = () => {
         e.preventDefault();
         setMessage('');
         try {
-            await axios.post('http://localhost:5000/api/teacher/results', {
+            await axios.post(`${config.API_URL}/teacher/results`, {
                 student_id: selectedStudent,
                 course_id: selectedCourse,
                 ...resultData

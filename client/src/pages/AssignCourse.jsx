@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 import axios from 'axios';
+import config from '../config';
 
 const AssignCourse = () => {
     const [students, setStudents] = useState([]);
@@ -15,12 +16,12 @@ const AssignCourse = () => {
         const fetchData = async () => {
             try {
                 const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-                const config = {
+                const authConfig = {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 };
 
-                const usersRes = await axios.get('http://localhost:5000/api/admin/users', config);
-                const coursesRes = await axios.get('http://localhost:5000/api/admin/courses', config);
+                const usersRes = await axios.get(`${config.API_URL}/admin/users`, authConfig);
+                const coursesRes = await axios.get(`${config.API_URL}/admin/courses`, authConfig);
 
                 setStudents(usersRes.data.filter(user => user.role === 'student'));
                 setCourses(coursesRes.data);
@@ -43,14 +44,14 @@ const AssignCourse = () => {
 
         try {
             const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-            const config = {
+            const authConfig = {
                 headers: { Authorization: `Bearer ${userInfo.token}` },
             };
 
-            await axios.post('http://localhost:5000/api/admin/assign-course', {
+            await axios.post(`${config.API_URL}/admin/assign-course`, {
                 studentId: selectedStudent,
                 courseId: selectedCourse
-            }, config);
+            }, authConfig);
 
             setMessage('✅ Course assigned successfully');
             setSelectedStudent('');

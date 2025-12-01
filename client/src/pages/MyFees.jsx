@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
@@ -7,7 +8,7 @@ const MyFees = () => {
     const [fees, setFees] = useState([]);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-    const config = {
+    const authConfig = {
         headers: {
             Authorization: `Bearer ${userInfo?.token}`,
         },
@@ -16,7 +17,7 @@ const MyFees = () => {
     useEffect(() => {
         const fetchFees = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/student/fees', config);
+                const { data } = await axios.get(`${config.API_URL}/student/fees`, authConfig);
                 setFees(data);
             } catch (err) {
                 console.error(err);

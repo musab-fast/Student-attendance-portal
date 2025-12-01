@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const LeaveRequests = () => {
     const [leaveRequests, setLeaveRequests] = useState([]);
@@ -8,7 +9,7 @@ const LeaveRequests = () => {
     const [formData, setFormData] = useState({ start_date: '', end_date: '', reason: '' });
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -18,7 +19,7 @@ const LeaveRequests = () => {
 
     const fetchLeaveRequests = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/student/leave-requests', config);
+            const { data } = await axios.get(`${config.API_URL}/student/leave-requests`, authConfig);
             setLeaveRequests(data);
         } catch (error) {
             console.error('Error fetching leave requests:', error);
@@ -28,7 +29,7 @@ const LeaveRequests = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await axios.post('http://localhost:5000/api/student/leave-request', formData, config);
+            await axios.post(`${config.API_URL}/student/leave-request`, formData, authConfig);
             setShowForm(false);
             setFormData({ start_date: '', end_date: '', reason: '' });
             fetchLeaveRequests();

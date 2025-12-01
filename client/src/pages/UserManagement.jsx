@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
@@ -22,7 +23,7 @@ const UserManagement = () => {
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-    const config = {
+    const authConfig = {
         headers: {
             Authorization: `Bearer ${userInfo?.token}`,
         },
@@ -30,7 +31,7 @@ const UserManagement = () => {
 
     const fetchUsers = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/admin/users', config);
+            const { data } = await axios.get(`${config.API_URL}/admin/users`, authConfig);
             setUsers(data);
         } catch (err) {
             console.error(err);
@@ -50,7 +51,7 @@ const UserManagement = () => {
         setLoading(true);
         setError('');
         try {
-            await axios.post('http://localhost:5000/api/admin/users', formData, config);
+            await axios.post(`${config.API_URL}/admin/users`, formData, authConfig);
             fetchUsers();
             setFormData({
                 name: '',
@@ -74,7 +75,7 @@ const UserManagement = () => {
     const handleDelete = async (userId) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/admin/users/${userId}`, config);
+                await axios.delete(`${config.API_URL}/admin/users/${userId}`, authConfig);
                 fetchUsers();
             } catch (err) {
                 console.error(err);
@@ -246,10 +247,10 @@ const UserManagement = () => {
                                                 <td className="p-3 text-[#D1D5DB]">{user.email}</td>
                                                 <td className="p-3">
                                                     <span className={`px-3 py-1 rounded-full text-sm ${user.role === 'admin'
-                                                            ? 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
-                                                            : user.role === 'teacher'
-                                                                ? 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
-                                                                : 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
+                                                        ? 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
+                                                        : user.role === 'teacher'
+                                                            ? 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
+                                                            : 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
                                                         }`}>
                                                         {user.role}
                                                     </span>

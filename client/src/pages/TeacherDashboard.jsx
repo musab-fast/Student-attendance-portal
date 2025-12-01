@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const TeacherDashboard = () => {
     const [courses, setCourses] = useState([]);
@@ -10,7 +11,7 @@ const TeacherDashboard = () => {
     });
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -20,15 +21,15 @@ const TeacherDashboard = () => {
 
     const fetchCourses = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/teacher/courses', config);
+            const { data } = await axios.get(`${config.API_URL}/teacher/courses`, authConfig);
             setCourses(data);
 
             let totalStudents = 0;
             for (const course of data) {
                 try {
                     const { data: students } = await axios.get(
-                        `http://localhost:5000/api/teacher/enrolled-students/${course._id}`,
-                        config
+                        `${config.API_URL}/teacher/enrolled-students/${course._id}`,
+                        authConfig
                     );
                     totalStudents += students.length;
                 } catch (err) {

@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const Announcements = () => {
     const [announcements, setAnnouncements] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -18,7 +19,7 @@ const Announcements = () => {
     const fetchAnnouncements = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get('http://localhost:5000/api/announcements', config);
+            const { data } = await axios.get(`${config.API_URL}/announcements`, authConfig);
             setAnnouncements(data);
         } catch (error) {
             console.error('Error fetching announcements:', error);

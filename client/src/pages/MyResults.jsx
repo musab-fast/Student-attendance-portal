@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
@@ -8,7 +9,7 @@ const MyResults = () => {
     const [activeTab, setActiveTab] = useState('all');
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-    const config = {
+    const authConfig = {
         headers: {
             Authorization: `Bearer ${userInfo?.token}`,
         },
@@ -17,7 +18,7 @@ const MyResults = () => {
     useEffect(() => {
         const fetchResults = async () => {
             try {
-                const { data } = await axios.get('http://localhost:5000/api/student/results', config);
+                const { data } = await axios.get(`${config.API_URL}/student/results`, authConfig);
                 setResults(data);
             } catch (err) {
                 console.error(err);
@@ -57,8 +58,8 @@ const MyResults = () => {
                                 <button
                                     onClick={() => setActiveTab('all')}
                                     className={`px-6 py-3 font-medium transition-all ${activeTab === 'all'
-                                            ? 'border-b-2 border-[#1D4ED8] text-[#1D4ED8] bg-[#1D4ED8]/10'
-                                            : 'text-[#D1D5DB] hover:text-[#F5F5F5] hover:bg-[#2E2E2E]/30'
+                                        ? 'border-b-2 border-[#1D4ED8] text-[#1D4ED8] bg-[#1D4ED8]/10'
+                                        : 'text-[#D1D5DB] hover:text-[#F5F5F5] hover:bg-[#2E2E2E]/30'
                                         }`}
                                 >
                                     All Results
@@ -66,8 +67,8 @@ const MyResults = () => {
                                 <button
                                     onClick={() => setActiveTab('quiz')}
                                     className={`px-6 py-3 font-medium transition-all ${activeTab === 'quiz'
-                                            ? 'border-b-2 border-[#1D4ED8] text-[#1D4ED8] bg-[#1D4ED8]/10'
-                                            : 'text-[#D1D5DB] hover:text-[#F5F5F5] hover:bg-[#2E2E2E]/30'
+                                        ? 'border-b-2 border-[#1D4ED8] text-[#1D4ED8] bg-[#1D4ED8]/10'
+                                        : 'text-[#D1D5DB] hover:text-[#F5F5F5] hover:bg-[#2E2E2E]/30'
                                         }`}
                                 >
                                     Quizzes & Assignments
@@ -75,8 +76,8 @@ const MyResults = () => {
                                 <button
                                     onClick={() => setActiveTab('mid')}
                                     className={`px-6 py-3 font-medium transition-all ${activeTab === 'mid'
-                                            ? 'border-b-2 border-[#1D4ED8] text-[#1D4ED8] bg-[#1D4ED8]/10'
-                                            : 'text-[#D1D5DB] hover:text-[#F5F5F5] hover:bg-[#2E2E2E]/30'
+                                        ? 'border-b-2 border-[#1D4ED8] text-[#1D4ED8] bg-[#1D4ED8]/10'
+                                        : 'text-[#D1D5DB] hover:text-[#F5F5F5] hover:bg-[#2E2E2E]/30'
                                         }`}
                                 >
                                     Midterms
@@ -84,8 +85,8 @@ const MyResults = () => {
                                 <button
                                     onClick={() => setActiveTab('final')}
                                     className={`px-6 py-3 font-medium transition-all ${activeTab === 'final'
-                                            ? 'border-b-2 border-[#1D4ED8] text-[#1D4ED8] bg-[#1D4ED8]/10'
-                                            : 'text-[#D1D5DB] hover:text-[#F5F5F5] hover:bg-[#2E2E2E]/30'
+                                        ? 'border-b-2 border-[#1D4ED8] text-[#1D4ED8] bg-[#1D4ED8]/10'
+                                        : 'text-[#D1D5DB] hover:text-[#F5F5F5] hover:bg-[#2E2E2E]/30'
                                         }`}
                                 >
                                     Finals
@@ -188,8 +189,8 @@ const MyResults = () => {
                                                                 <td className="p-3">
                                                                     {result.midterm !== undefined && (
                                                                         <span className={`px-3 py-1 rounded-full text-sm ${result.midterm >= 15
-                                                                                ? 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
-                                                                                : 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
+                                                                            ? 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
+                                                                            : 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
                                                                             }`}>
                                                                             {result.midterm >= 15 ? 'Pass' : 'Fail'}
                                                                         </span>
@@ -205,8 +206,8 @@ const MyResults = () => {
                                                                 <td className="p-3">
                                                                     {result.final_exam !== undefined && (
                                                                         <span className={`px-3 py-1 rounded-full text-sm ${result.final_exam >= 20
-                                                                                ? 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
-                                                                                : 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
+                                                                            ? 'bg-[#1D4ED8]/20 text-[#1D4ED8] border border-[#1D4ED8]/30'
+                                                                            : 'bg-[#6B7280]/20 text-[#6B7280] border border-[#6B7280]/30'
                                                                             }`}>
                                                                             {result.final_exam >= 20 ? 'Pass' : 'Fail'}
                                                                         </span>

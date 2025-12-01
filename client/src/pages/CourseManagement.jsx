@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import config from '../config';
 import Sidebar from '../components/Sidebar';
 import Footer from '../components/Footer';
 
@@ -18,7 +19,7 @@ const CourseManagement = () => {
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
 
-    const config = {
+    const authConfig = {
         headers: {
             Authorization: `Bearer ${userInfo?.token}`,
         },
@@ -26,7 +27,7 @@ const CourseManagement = () => {
 
     const fetchCourses = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/admin/courses', config);
+            const { data } = await axios.get(`${config.API_URL}/admin/courses`, authConfig);
             setCourses(data);
         } catch (err) {
             console.error(err);
@@ -35,7 +36,7 @@ const CourseManagement = () => {
 
     const fetchTeachers = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/admin/users', config);
+            const { data } = await axios.get(`${config.API_URL}/admin/users`, authConfig);
             setTeachers(data.filter(user => user.role === 'teacher'));
         } catch (err) {
             console.error(err);
@@ -56,7 +57,7 @@ const CourseManagement = () => {
         setLoading(true);
         setError('');
         try {
-            await axios.post('http://localhost:5000/api/admin/courses', formData, config);
+            await axios.post(`${config.API_URL}/admin/courses`, formData, authConfig);
             fetchCourses();
             setFormData({
                 course_id: '',
@@ -75,7 +76,7 @@ const CourseManagement = () => {
     const handleDelete = async (courseId) => {
         if (window.confirm('Are you sure you want to delete this course?')) {
             try {
-                await axios.delete(`http://localhost:5000/api/admin/courses/${courseId}`, config);
+                await axios.delete(`${config.API_URL}/admin/courses/${courseId}`, authConfig);
                 fetchCourses();
             } catch (err) {
                 console.error(err);

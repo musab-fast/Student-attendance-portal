@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const AdminDashboard = () => {
     const [stats, setStats] = useState({
@@ -13,7 +14,7 @@ const AdminDashboard = () => {
     });
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -23,13 +24,13 @@ const AdminDashboard = () => {
 
     const fetchStats = async () => {
         try {
-            const { data: users } = await axios.get('http://localhost:5000/api/admin/users', config);
+            const { data: users } = await axios.get(`${config.API_URL}/admin/users`, authConfig);
             const students = users.filter(u => u.role === 'student').length;
             const teachers = users.filter(u => u.role === 'teacher').length;
 
-            const { data: courses } = await axios.get('http://localhost:5000/api/admin/courses', config);
+            const { data: courses } = await axios.get(`${config.API_URL}/admin/courses`, authConfig);
 
-            const { data: fees } = await axios.get('http://localhost:5000/api/admin/fees', config);
+            const { data: fees } = await axios.get(`${config.API_URL}/admin/fees`, authConfig);
             const totalFees = fees.reduce((sum, fee) => sum + fee.amount, 0);
             const paidFees = fees.filter(f => f.status === 'Paid').reduce((sum, fee) => sum + fee.amount, 0);
 

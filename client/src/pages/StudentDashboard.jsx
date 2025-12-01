@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../components/Layout';
 import axios from 'axios';
+import config from '../config';
 
 const StudentDashboard = () => {
     const [stats, setStats] = useState({
@@ -15,7 +16,7 @@ const StudentDashboard = () => {
     });
 
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const config = {
+    const authConfig = {
         headers: { Authorization: `Bearer ${userInfo?.token}` }
     };
 
@@ -25,8 +26,8 @@ const StudentDashboard = () => {
 
     const fetchStats = async () => {
         try {
-            const { data: attendance } = await axios.get('http://localhost:5000/api/student/attendance', config);
-            const { data: fees } = await axios.get('http://localhost:5000/api/student/fees', config);
+            const { data: attendance } = await axios.get(`${config.API_URL}/student/attendance`, authConfig);
+            const { data: fees } = await axios.get(`${config.API_URL}/student/fees`, authConfig);
 
             const presentCount = attendance.filter(a => a.status === 'Present').length;
             const absentCount = attendance.filter(a => a.status === 'Absent').length;
