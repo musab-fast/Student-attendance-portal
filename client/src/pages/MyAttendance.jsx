@@ -49,22 +49,22 @@ const MyAttendance = () => {
                                     attendancePercentage >= 50 ? 'text-[#6B7280]' : 'text-[#6B7280]'
                                     }`}>{attendancePercentage}%</p>
                             </div>
-                            <div className="card-dark card-hover p-6 animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
+                            <div className="card-dark card-hover p-6 animate-fadeInUp animate-delay-100">
                                 <h3 className="text-[#D1D5DB] text-sm font-medium mb-2">Present</h3>
                                 <p className="text-3xl font-bold text-[#1D4ED8]">{presentCount}</p>
                             </div>
-                            <div className="card-dark card-hover p-6 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+                            <div className="card-dark card-hover p-6 animate-fadeInUp animate-delay-200">
                                 <h3 className="text-[#D1D5DB] text-sm font-medium mb-2">Absent</h3>
                                 <p className="text-3xl font-bold text-[#6B7280]">{absentCount}</p>
                             </div>
-                            <div className="card-dark card-hover p-6 animate-fadeInUp" style={{ animationDelay: '0.3s' }}>
+                            <div className="card-dark card-hover p-6 animate-fadeInUp animate-delay-300">
                                 <h3 className="text-[#D1D5DB] text-sm font-medium mb-2">Leave</h3>
                                 <p className="text-3xl font-bold text-[#6B7280]">{leaveCount}</p>
                             </div>
                         </div>
 
                         {/* Attendance History */}
-                        <div className="card-dark p-6 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
+                        <div className="card-dark p-6 animate-fadeInUp animate-delay-400">
                             <h2 className="text-xl font-bold mb-4 text-[#F5F5F5]">Attendance History</h2>
                             <div className="overflow-x-auto">
                                 <table className="w-full text-left border-collapse">

@@ -1,70 +1,52 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Layout from '../components/Layout';
-import axios from 'axios';
-import config from '../config';
+import { useAdminStats } from '../hooks/useAdminStats';
+import { formatCurrency } from '../utils/formatters';
 
 const AdminDashboard = () => {
-    const [stats, setStats] = useState({
-        totalStudents: 0,
-        totalTeachers: 0,
-        totalCourses: 0,
-        totalFees: 0,
-        paidFees: 0,
-        unpaidFees: 0
-    });
+    const { stats, loading, error } = useAdminStats();
 
-    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    const authConfig = {
-        headers: { Authorization: `Bearer ${userInfo?.token}` }
-    };
-
-    useEffect(() => {
-        fetchStats();
-    }, []);
-
-    const fetchStats = async () => {
-        try {
-            const { data: users } = await axios.get(`${config.API_URL}/admin/users`, authConfig);
-            const students = users.filter(u => u.role === 'student').length;
-            const teachers = users.filter(u => u.role === 'teacher').length;
-
-            const { data: courses } = await axios.get(`${config.API_URL}/admin/courses`, authConfig);
-
-            const { data: fees } = await axios.get(`${config.API_URL}/admin/fees`, authConfig);
-            const totalFees = fees.reduce((sum, fee) => sum + fee.amount, 0);
-            const paidFees = fees.filter(f => f.status === 'Paid').reduce((sum, fee) => sum + fee.amount, 0);
-
-            setStats({
-                totalStudents: students,
-                totalTeachers: teachers,
-                totalCourses: courses.length,
-                totalFees,
-                paidFees,
-                unpaidFees: totalFees - paidFees
-            });
-        } catch (error) {
-            console.error('Error fetching stats:', error);
-        }
-    };
-
-    const StatCard = ({ title, value, icon, color, delay, subtitle }) => (
-        <div className="bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-[#58a6ff]/50 hover:bg-white/10 transition-all duration-300 hover:shadow-xl hover:shadow-[#58a6ff]/10 animate-fadeInUp transform hover:-translate-y-1" style={{ animationDelay: `${delay}s` }}>
-            <div className="flex items-start justify-between mb-4">
-                <div className="w-12 h-12 bg-[#58a6ff]/10 rounded-lg flex items-center justify-center border border-[#58a6ff]/20">
-                    {icon}
+    if (loading) {
+        return (
+            <Layout role="admin">
+                <div className="flex items-center justify-center py-20">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#1D4ED8]"></div>
                 </div>
-                {subtitle && (
-                    <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#58a6ff]/10 text-[#58a6ff] border border-[#58a6ff]/20">
-                        {subtitle}
-                    </span>
-                )}
+            </Layout>
+        );
+    }
+
+    if (error) {
+        return (
+            <Layout role="admin">
+                <div className="card-dark p-6 text-center">
+                    <p className="text-[#6B7280]">{error}</p>
+                </div>
+            </Layout>
+        );
+    }
+
+    const StatCard = ({ title, value, icon, delay, subtitle }) => {
+        const delayClass = `animate-delay-${delay}00`;
+        return (
+            <div className={`bg-white/5 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-[#58a6ff]/50 hover:bg-white/10 transition-all duration-300 hover:shadow-xl hover:shadow-[#58a6ff]/10 animate-fadeInUp transform hover:-translate-y-1 ${delayClass}`}>
+                <div className="flex items-start justify-between mb-4">
+                    <div className="w-12 h-12 bg-[#58a6ff]/10 rounded-lg flex items-center justify-center border border-[#58a6ff]/20">
+                        {icon}
+                    </div>
+                    {subtitle && (
+                        <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#58a6ff]/10 text-[#58a6ff] border border-[#58a6ff]/20">
+                            {subtitle}
+                        </span>
+                    )}
+                </div>
+                <div>
+                    <p className="text-[#8b949e] text-sm font-medium mb-1">{title}</p>
+                    <p className="text-3xl font-bold text-[#c9d1d9]">{value}</p>
+                </div>
             </div>
-            <div>
-                <p className="text-[#8b949e] text-sm font-medium mb-1">{title}</p>
-                <p className="text-3xl font-bold text-[#c9d1d9]">{value}</p>
-            </div>
-        </div>
-    );
+        );
+    };
 
     return (
         <Layout role="admin">
@@ -86,7 +68,6 @@ const AdminDashboard = () => {
                     <StatCard
                         title="Total Students"
                         value={stats.totalStudents}
-                        color="[#1D4ED8]"
                         delay={0}
                         subtitle="Active"
                         icon={
@@ -98,8 +79,7 @@ const AdminDashboard = () => {
                     <StatCard
                         title="Total Teachers"
                         value={stats.totalTeachers}
-                        color="[#1D4ED8]"
-                        delay={0.1}
+                        delay={1}
                         subtitle="Active"
                         icon={
                             <svg className="w-6 h-6 text-[#1D4ED8]" fill="currentColor" viewBox="0 0 20 20">
@@ -110,8 +90,7 @@ const AdminDashboard = () => {
                     <StatCard
                         title="Total Courses"
                         value={stats.totalCourses}
-                        color="[#1D4ED8]"
-                        delay={0.2}
+                        delay={2}
                         subtitle="Offered"
                         icon={
                             <svg className="w-6 h-6 text-[#1D4ED8]" fill="currentColor" viewBox="0 0 20 20">
@@ -134,9 +113,8 @@ const AdminDashboard = () => {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <StatCard
                         title="Total Fees"
-                        value={`Rs. ${stats.totalFees.toLocaleString()}`}
-                        color="[#1D4ED8]"
-                        delay={0.3}
+                        value={formatCurrency(stats.totalFees)}
+                        delay={3}
                         subtitle="PKR"
                         icon={
                             <svg className="w-6 h-6 text-[#1D4ED8]" fill="currentColor" viewBox="0 0 20 20">
@@ -146,9 +124,8 @@ const AdminDashboard = () => {
                     />
                     <StatCard
                         title="Paid Fees"
-                        value={`Rs. ${stats.paidFees.toLocaleString()}`}
-                        color="[#1D4ED8]"
-                        delay={0.4}
+                        value={formatCurrency(stats.paidFees)}
+                        delay={4}
                         subtitle="PKR"
                         icon={
                             <svg className="w-6 h-6 text-[#1D4ED8]" fill="currentColor" viewBox="0 0 20 20">
@@ -158,9 +135,8 @@ const AdminDashboard = () => {
                     />
                     <StatCard
                         title="Unpaid Fees"
-                        value={`Rs. ${stats.unpaidFees.toLocaleString()}`}
-                        color="[#6B7280]"
-                        delay={0.5}
+                        value={formatCurrency(stats.unpaidFees)}
+                        delay={5}
                         subtitle="PKR"
                         icon={
                             <svg className="w-6 h-6 text-[#6B7280]" fill="currentColor" viewBox="0 0 20 20">
@@ -175,6 +151,3 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
-
-
-

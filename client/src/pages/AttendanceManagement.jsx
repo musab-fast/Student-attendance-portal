@@ -125,7 +125,7 @@ const AttendanceManagement = () => {
                         )}
 
                         {/* Course Selection */}
-                        <div className="card-dark p-6 mb-6 animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
+                        <div className="card-dark p-6 mb-6 animate-fadeInUp animate-delay-100">
                             <h2 className="text-xl font-bold mb-4 text-[#F5F5F5]">Select Course & Date</h2>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
@@ -157,7 +157,7 @@ const AttendanceManagement = () => {
 
                         {/* Student List */}
                         {selectedCourse && students.length > 0 && (
-                            <div className="card-dark p-6 animate-fadeInUp" style={{ animationDelay: '0.2s' }}>
+                            <div className="card-dark p-6 animate-fadeInUp animate-delay-200">
                                 <div className="flex justify-between items-center mb-4">
                                     <h2 className="text-xl font-bold text-[#F5F5F5]">Students ({students.length})</h2>
                                     <div className="flex gap-2">
