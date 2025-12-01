@@ -172,7 +172,7 @@ const importData = async () => {
             course_id: 'CS501',
             course_name: 'Data Structures and Algorithms',
             credit_hours: 3,
-            semester: '5',
+            semester: 5,
             instructor_id: teacher1User._id,
         });
 
@@ -180,7 +180,7 @@ const importData = async () => {
             course_id: 'CS502',
             course_name: 'Database Management Systems',
             credit_hours: 3,
-            semester: '5',
+            semester: 5,
             instructor_id: teacher3User._id,
         });
 
@@ -188,7 +188,7 @@ const importData = async () => {
             course_id: 'CS503',
             course_name: 'Web Development',
             credit_hours: 4,
-            semester: '5',
+            semester: 5,
             instructor_id: teacher1User._id,
         });
 
@@ -196,7 +196,7 @@ const importData = async () => {
             course_id: 'MATH301',
             course_name: 'Linear Algebra',
             credit_hours: 3,
-            semester: '3',
+            semester: 3,
             instructor_id: teacher2User._id,
         });
 
@@ -204,7 +204,7 @@ const importData = async () => {
             course_id: 'CS301',
             course_name: 'Object Oriented Programming',
             credit_hours: 4,
-            semester: '3',
+            semester: 3,
             instructor_id: teacher3User._id,
         });
 
@@ -234,6 +234,102 @@ const importData = async () => {
 
         student5.enrolled_courses = [course4._id, course5._id];
         await student5.save();
+
+        // ===== CREATE TIMETABLE =====
+        const Timetable = require('./models/Timetable');
+
+        // Semester 5 Timetable
+        await Timetable.create({
+            course: course1._id,
+            teacher: teacher1._id,
+            day: 'Monday',
+            startTime: '09:00',
+            endTime: '10:30',
+            room: 'CS-101',
+            semester: 5
+        });
+
+        await Timetable.create({
+            course: course2._id,
+            teacher: teacher3._id,
+            day: 'Monday',
+            startTime: '11:00',
+            endTime: '12:30',
+            room: 'CS-102',
+            semester: 5
+        });
+
+        await Timetable.create({
+            course: course3._id,
+            teacher: teacher1._id,
+            day: 'Tuesday',
+            startTime: '09:00',
+            endTime: '11:00',
+            room: 'CS-Lab1',
+            semester: 5
+        });
+
+        await Timetable.create({
+            course: course1._id,
+            teacher: teacher1._id,
+            day: 'Wednesday',
+            startTime: '14:00',
+            endTime: '15:30',
+            room: 'CS-101',
+            semester: 5
+        });
+
+        await Timetable.create({
+            course: course2._id,
+            teacher: teacher3._id,
+            day: 'Thursday',
+            startTime: '10:00',
+            endTime: '11:30',
+            room: 'CS-102',
+            semester: 5
+        });
+
+        // Semester 3 Timetable
+        await Timetable.create({
+            course: course4._id,
+            teacher: teacher2._id,
+            day: 'Monday',
+            startTime: '08:00',
+            endTime: '09:30',
+            room: 'Math-201',
+            semester: 3
+        });
+
+        await Timetable.create({
+            course: course5._id,
+            teacher: teacher3._id,
+            day: 'Tuesday',
+            startTime: '10:00',
+            endTime: '12:00',
+            room: 'CS-Lab2',
+            semester: 3
+        });
+
+        await Timetable.create({
+            course: course4._id,
+            teacher: teacher2._id,
+            day: 'Thursday',
+            startTime: '13:00',
+            endTime: '14:30',
+            room: 'Math-201',
+            semester: 3
+        });
+
+        await Timetable.create({
+            course: course5._id,
+            teacher: teacher3._id,
+            day: 'Friday',
+            startTime: '09:00',
+            endTime: '11:00',
+            room: 'CS-Lab2',
+            semester: 3
+        });
+
 
         console.log('\n✅ Data Imported Successfully!\n');
         console.log('='.repeat(60));
