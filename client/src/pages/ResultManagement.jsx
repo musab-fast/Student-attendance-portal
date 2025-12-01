@@ -69,7 +69,7 @@ const ResultManagement = () => {
                 student_id: selectedStudent,
                 course_id: selectedCourse,
                 ...resultData
-            }, config);
+            }, authConfig);
 
             setMessage('✅ Result uploaded successfully');
             setResultData({
@@ -194,7 +194,7 @@ const ResultManagement = () => {
                             </div>
                         )}
 
-                        <div className="card-dark p-6 animate-fadeInUp" style={{ animationDelay: '0.1s' }}>
+                        <div className="card-dark p-6 animate-fadeInUp animate-delay-100">
                             <h2 className="text-xl font-bold mb-4 text-[#F5F5F5]">Enter Student Results</h2>
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 {/* Course Selection */}
