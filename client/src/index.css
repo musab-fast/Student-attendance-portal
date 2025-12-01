@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#0d1117] text-[#c9d1d9];
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  code {
+    font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  }
+}
+
+@layer components {
+
+  /* GitHub Dark Theme Colors */
+  .bg-dark-primary {
+    background-color: #0d1117;
+  }
+
+  .bg-dark-surface {
+    background-color: #161b22;
+  }
+
+  .bg-sidebar {
+    background-color: #161b22;
+  }
+
+  .text-main {
+    color: #c9d1d9;
+  }
+
+  .text-muted {
+    color: #8b949e;
+  }
+
+  /* Card Styles */
+  .card-dark {
+    @apply bg-[#161b22] border border-[#30363d] rounded-md shadow-sm transition-all duration-200;
+  }
+
+  .card-hover {
+    @apply hover:border-[#8b949e] hover:shadow-md;
+  }
+
+  /* Button Styles */
+  .btn-primary {
+    @apply bg-[#238636] text-white font-medium py-1.5 px-4 rounded-md border border-[#f0f6fc]/10 hover:bg-[#2ea043] shadow-sm transition-all duration-200 text-sm;
+  }
+
+  .btn-secondary {
+    @apply bg-[#21262d] text-[#c9d1d9] font-medium py-1.5 px-4 rounded-md border border-[#30363d] hover:bg-[#30363d] hover:border-[#8b949e] shadow-sm transition-all duration-200 text-sm;
+  }
+
+  .btn-danger {
+    @apply bg-[#21262d] text-[#f85149] font-medium py-1.5 px-4 rounded-md border border-[#30363d] hover:bg-[#da3633] hover:text-white hover:border-transparent shadow-sm transition-all duration-200 text-sm;
+  }
+
+  /* Input Styles */
+  .input-dark {
+    @apply w-full px-3 py-1.5 bg-[#0d1117] border border-[#30363d] text-[#c9d1d9] rounded-md focus:border-[#58a6ff] focus:ring-2 focus:ring-[#58a6ff]/30 transition-all duration-200 outline-none placeholder-[#484f58] text-sm;
+  }
+
+  /* Glassmorphism - GitHub style is solid, but keeping a utility for overlays */
+  .glass-dark {
+    @apply bg-[#161b22] border border-[#30363d] shadow-xl;
+  }
+
+  /* Links */
+  .link-github {
+    @apply text-[#58a6ff] hover:underline decoration-[#58a6ff];
+  }
+}
+
+@layer utilities {
+
+  /* Custom Scrollbar - GitHub Style */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-[#0d1117];
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-[#30363d] rounded-full border-2 border-[#0d1117];
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-[#8b949e];
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  .animate-fadeInUp {
+    animation: fadeInUp 0.4s ease-out;
+  }
+
+  .animate-slideInRight {
+    animation: slideInRight 0.3s ease-out;
+  }
+}
